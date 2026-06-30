@@ -337,3 +337,14 @@
   .samples-row { grid-template-columns: repeat(2, 1fr); }
   .form-title { font-size: 1.6rem; }
 }
+
+@media (max-width: 380px) {
+  .samples-row { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .sample-pill {
+    padding: 7px 8px;
+    font-size: 11px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.3;
+  }
+}

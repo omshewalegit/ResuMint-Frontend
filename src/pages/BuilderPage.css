@@ -312,6 +312,18 @@
   }
 }
 
+@media (max-height: 600px) and (max-width: 900px) {
+  .bp-preview-wrap {
+    height: 65vh;
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bp-title { font-size: clamp(1.6rem, 8vw, 2.2rem); }
+  .bp-header { margin-bottom: 28px; }
+}
+
 /* ════ PRINT STYLES ════ */
 @media print {
   /* Force browsers to print background colors exactly — without this,
