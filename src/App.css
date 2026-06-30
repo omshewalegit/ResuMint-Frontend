@@ -1,0 +1,9 @@
+/* ═══════════════════════════════════════════════════
+   APP LEVEL STYLES
+   Page transitions and shared layout utilities
+═══════════════════════════════════════════════════ */
+
+/* Smooth page-level content entrance */
+.app-page-enter {
+  animation: fade-up 0.6s var(--ease-out) both;
+}

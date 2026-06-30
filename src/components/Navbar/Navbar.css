@@ -1,0 +1,101 @@
+/* ═══════════════════════════════════════════════════
+   NAVBAR — "Terminal Luxe" design system
+   Mirrors Landing Page's lp-nav exactly
+═══════════════════════════════════════════════════ */
+
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
+  border-bottom: 1px solid transparent;
+}
+
+.nav-scrolled {
+  background: rgba(5,8,16,0.85);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-bottom-color: var(--border);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+}
+
+.nav-inner {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .nav-inner { padding: 0 24px; }
+}
+
+/* ── Brand ── */
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.2s;
+}
+
+.nav-brand:hover { color: var(--cyan); }
+
+.nav-brand-accent { color: var(--cyan); }
+
+.nav-logo-mark {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--cyan), var(--green));
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: #050810;
+  letter-spacing: -0.02em;
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+}
+
+/* ── Right side ── */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ── Nav links ── */
+.nav-link {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--text-2);
+  text-decoration: none;
+  padding: 7px 16px;
+  border-radius: 100px;
+  transition: color 0.2s, background 0.2s;
+  letter-spacing: 0.01em;
+}
+
+.nav-link:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .nav-link { display: none; }
+  .nav-right { gap: 12px; }
+}

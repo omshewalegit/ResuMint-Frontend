@@ -1,0 +1,430 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* { box-sizing: border-box; }
+
+.mt-wrap {
+  background: #ffffff;
+  color: #1a1a1a;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 9.8pt;
+  line-height: 1.5;
+  padding: 0.6in 0.7in;
+  max-width: 8.5in;
+  min-height: 11in;
+}
+
+/* ══ HEADER ══ */
+.mt-header {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.mt-name {
+  font-size: 28pt;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 2px 0;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.mt-role {
+  font-size: 11pt;
+  font-weight: 500;
+  color: #3b5bdb;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.mt-location-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 9.5pt;
+  font-weight: 500;
+  color: #555;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.mt-location-line svg { flex-shrink: 0; color: #3b5bdb; }
+
+/* contact bar */
+.mt-contact-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 0;
+  font-size: 8.5pt;
+  color: #333;
+  border-top: 1.5px solid #e8e8e8;
+  border-bottom: 1.5px solid #e8e8e8;
+  padding: 5px 0;
+  margin-bottom: 14px;
+}
+
+.mt-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #222;
+  text-decoration: none;
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid #ddd;
+  line-height: 1.6;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.mt-contact-item:last-child {
+  border-right: none;
+  margin-right: 0;
+  padding-right: 0;
+}
+
+.mt-contact-item svg { flex-shrink: 0; color: #666; }
+
+/* ══ SECTION ══ */
+.mt-section { margin-bottom: 10px; }
+
+.mt-heading {
+  font-size: 9.5pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #111;
+  border-bottom: 2px solid #111;
+  padding-bottom: 2px;
+  margin: 0 0 7px 0;
+  line-height: 1.3;
+}
+
+/* ══ SUMMARY ══ */
+.mt-summary {
+  font-size: 9.8pt;
+  color: #333;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ══ EXPERIENCE / ENTRIES ══ */
+.mt-entry {
+  margin-bottom: 7px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #ececec;
+}
+.mt-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.mt-entry-title {
+  font-size: 10pt;
+  font-weight: 600;
+  color: #111;
+  margin: 0 0 1px 0;
+}
+
+.mt-entry-company {
+  font-size: 9.8pt;
+  font-weight: 500;
+  color: #3b5bdb;
+  margin: 0 0 3px 0;
+}
+
+.mt-entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  font-size: 9pt;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.mt-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mt-meta-item svg { color: #888; flex-shrink: 0; }
+
+.mt-bullets {
+  list-style: none;
+  padding-left: 13px;
+  margin: 3px 0 0 0;
+}
+
+.mt-bullets li {
+  font-size: 9.8pt;
+  color: #2a2a2a;
+  line-height: 1.55;
+  padding-left: 2px;
+  position: relative;
+  margin-bottom: 1px;
+}
+
+.mt-bullets li::before {
+  content: "•";
+  position: absolute;
+  left: -11px;
+  color: #3b5bdb;
+  font-size: 10pt;
+}
+
+.mt-bullets li strong { font-weight: 600; }
+
+/* ══ EDUCATION ══ */
+.mt-edu-entry {
+  margin-bottom: 7px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #ececec;
+}
+.mt-edu-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.mt-edu-degree {
+  font-size: 10pt;
+  font-weight: 600;
+  color: #111;
+  margin: 0 0 1px 0;
+}
+
+.mt-edu-school {
+  font-size: 9.8pt;
+  font-weight: 500;
+  color: #3b5bdb;
+  margin: 0 0 3px 0;
+}
+
+.mt-edu-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  font-size: 9pt;
+  color: #666;
+}
+
+.mt-edu-cw-heading {
+  font-size: 9.5pt;
+  font-weight: 600;
+  color: #111;
+  margin: 5px 0 3px 0;
+}
+
+.mt-cw-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mt-cw-grid li {
+  font-size: 9pt;
+  color: #333;
+  line-height: 1.55;
+  padding-left: 13px;
+  position: relative;
+}
+
+.mt-cw-grid li::before {
+  content: "•";
+  position: absolute;
+  left: 2px;
+  color: #3b5bdb;
+}
+
+/* ══ KEY ACHIEVEMENTS — 2-col ══ */
+.mt-ach-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 20px;
+}
+
+.mt-ach-item { display: flex; flex-direction: column; gap: 1px; }
+
+.mt-ach-marker {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: #3b5bdb;
+  margin-top: 1px;
+}
+
+.mt-ach-title {
+  font-size: 9.8pt;
+  font-weight: 600;
+  color: #111;
+  margin: 0;
+}
+
+.mt-ach-desc {
+  font-size: 9pt;
+  color: #555;
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Detailed achievement entries (with bullets) */
+.mt-ach-detail { margin-bottom: 6px; }
+.mt-ach-detail:last-child { margin-bottom: 0; }
+.mt-ach-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.mt-ach-detail-title { font-size: 10pt; font-weight: 600; color: #111; }
+.mt-ach-detail-date { font-size: 9pt; color: #666; white-space: nowrap; flex-shrink: 0; }
+
+/* ══ LANGUAGES — dot rating ══ */
+.mt-lang-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 28px;
+  align-items: flex-start;
+}
+
+.mt-lang-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mt-lang-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mt-lang-name { font-size: 9.8pt; font-weight: 600; color: #111; white-space: nowrap; }
+
+.mt-lang-dots { display: flex; gap: 4px; align-items: center; }
+
+.mt-lang-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #3b5bdb;
+  flex-shrink: 0;
+}
+
+.mt-lang-dot.empty { background: #d0d5e8; }
+
+.mt-lang-level { font-size: 8.5pt; color: #777; margin: 0; }
+
+/* ══ SKILLS — tag pills ══ */
+.mt-skills-block { display: flex; flex-direction: column; gap: 5px; }
+
+.mt-skill-row { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+
+.mt-skill-label {
+  font-size: 9.5pt;
+  font-weight: 600;
+  color: #111;
+  white-space: nowrap;
+  min-width: 150px;
+  padding-top: 2px;
+}
+
+.mt-skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.mt-skill-tag {
+  background: #f0f3ff;
+  color: #2c3e9e;
+  font-size: 8.5pt;
+  font-weight: 500;
+  padding: 2px 9px;
+  border-radius: 4px;
+  border: 1px solid #c5cef5;
+  white-space: nowrap;
+}
+
+/* ══ PROJECTS ══ */
+.mt-proj-entry {
+  margin-bottom: 7px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #ececec;
+}
+.mt-proj-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.mt-proj-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.mt-proj-title-group {
+  display: flex;
+  align-items: baseline;
+  flex: 1;
+  min-width: 0;
+  gap: 0;
+}
+
+.mt-proj-name { font-size: 10pt; font-weight: 600; color: #111; white-space: nowrap; }
+
+.mt-proj-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 5px;
+  position: relative;
+  top: 1px;
+}
+
+.mt-proj-icons a { color: #3b5bdb; text-decoration: none; display: inline-flex; }
+.mt-proj-icons a:hover { color: #2241b3; }
+
+.mt-proj-pipe { color: #bbb; margin: 0 5px; font-weight: 400; font-size: 9.5pt; }
+
+.mt-proj-tech { font-size: 9pt; font-style: italic; color: #666; }
+
+.mt-proj-date { font-size: 9.5pt; font-weight: 600; color: #111; white-space: nowrap; flex-shrink: 0; }
+
+/* ══ CERTIFICATIONS ══ */
+.mt-cert-entry {
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ececec;
+}
+.mt-cert-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.mt-cert-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.mt-cert-name { font-size: 9.8pt; font-weight: 600; color: #111; }
+.mt-cert-date { font-size: 9.5pt; font-weight: 600; color: #111; white-space: nowrap; flex-shrink: 0; }
+.mt-cert-issuer { font-size: 9pt; color: #3b5bdb; font-style: italic; margin: 0; }
+
+/* ══ INTERESTS ══ */
+.mt-interests-text { font-size: 9.8pt; color: #333; margin: 0; line-height: 1.55; }
+
+/* ══ PRINT ══ */
+@media print {
+  /* Chrome/print engines strip background-color by default to save ink.
+     Force exact color rendering so language dots, skill tags, and any
+     other background-based UI actually show up in the printed PDF. */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .mt-section, .mt-entry, .mt-edu-entry, .mt-proj-entry, .mt-cert-entry, .mt-ach-item {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .mt-wrap {
+    padding: 0.45in 0.55in !important;
+    min-height: unset !important;
+  }
+}

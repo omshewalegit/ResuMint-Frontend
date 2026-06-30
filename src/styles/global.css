@@ -1,0 +1,315 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ═══════════════════════════════════════════════════
+   GLOBAL RESET
+═══════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   DESIGN TOKENS — extracted from Landing Page
+   "Terminal Luxe" design system
+═══════════════════════════════════════════════════ */
+:root {
+  /* Backgrounds */
+  --bg:         #050810;
+  --bg-2:       #080c15;
+  --bg-3:       #0b1120;
+
+  /* Surfaces */
+  --surface:    rgba(255,255,255,0.028);
+  --surface-2:  rgba(255,255,255,0.045);
+  --surface-3:  rgba(255,255,255,0.065);
+
+  /* Borders */
+  --border:     rgba(255,255,255,0.06);
+  --border-2:   rgba(0,212,255,0.14);
+  --border-hover: rgba(0,212,255,0.3);
+
+  /* Accent colors */
+  --cyan:       #00d4ff;
+  --cyan-dim:   rgba(0,212,255,0.55);
+  --cyan-ghost: rgba(0,212,255,0.08);
+  --cyan-glow:  rgba(0,212,255,0.12);
+  --green:      #00ff88;
+  --green-dim:  rgba(0,255,136,0.1);
+  --amber:      #f0a500;
+  --violet:     #8b5cf6;
+  --red:        #ff4444;
+
+  /* Text */
+  --text:       #dde5f0;
+  --text-2:     rgba(180,200,220,0.55);
+  --text-3:     rgba(140,170,190,0.3);
+  --text-4:     rgba(100,130,150,0.2);
+
+  /* Radii */
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  20px;
+  --radius-xl:  28px;
+
+  /* Easings */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Typography */
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'Space Mono', monospace;
+
+  /* Shadows */
+  --shadow-card:  0 4px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,212,255,0.04);
+  --shadow-glow:  0 0 40px rgba(0,212,255,0.12);
+  --shadow-heavy: 0 32px 80px rgba(0,0,0,0.55);
+}
+
+/* ═══════════════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════════════ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════════
+   SELECTION
+═══════════════════════════════════════════════════ */
+::selection {
+  background: var(--cyan-glow);
+  color: var(--cyan);
+}
+
+/* ═══════════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════════ */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0,212,255,0.12);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,212,255,0.25);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,212,255,0.12) var(--bg-2);
+}
+
+/* ═══════════════════════════════════════════════════
+   BASE ELEMENT STYLES
+═══════════════════════════════════════════════════ */
+button {
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+input, textarea, select {
+  font-family: var(--font-body);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ═══════════════════════════════════════════════════
+   SHARED BUTTON SYSTEM — from Landing Page
+═══════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s var(--ease-spring), box-shadow 0.2s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--bx,50%) var(--by,50%), rgba(255,255,255,0.12), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.btn:hover::after { opacity: 1; }
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  font-size: 13px;
+  padding: 14px 28px;
+  background: linear-gradient(120deg, var(--cyan) 0%, var(--green) 100%);
+  color: #050810;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,212,255,0.3), 0 0 0 1px rgba(0,212,255,0.2);
+}
+
+.btn-sm { padding: 10px 20px; font-size: 12px; }
+.btn-lg { padding: 18px 44px; font-size: 14px; border-radius: var(--radius-lg); }
+
+.btn-ghost {
+  font-size: 13px;
+  padding: 13px 22px;
+  background: transparent;
+  border: 1px solid var(--border-2);
+  color: var(--text-2);
+  font-family: var(--font-body);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0.01em;
+}
+.btn-ghost:hover {
+  color: var(--cyan-dim);
+  border-color: rgba(0,212,255,0.28);
+  background: var(--cyan-ghost);
+}
+
+.btn-icon { display: flex; align-items: center; transition: transform 0.2s; }
+.btn:hover .btn-icon { transform: translateX(2px); }
+
+/* ═══════════════════════════════════════════════════
+   SHARED ANIMATIONS
+═══════════════════════════════════════════════════ */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.92) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes shimmer {
+  from { background-position: 0% center; }
+  to   { background-position: 200% center; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,255,0.15); }
+  50% { box-shadow: 0 0 0 6px rgba(0,212,255,0.05); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ═══════════════════════════════════════════════════
+   UTILITY: Noise Overlay (shared)
+═══════════════════════════════════════════════════ */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* ═══════════════════════════════════════════════════
+   UTILITY: Ambient Grid
+═══════════════════════════════════════════════════ */
+.ambient-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.022) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   UTILITY: Ambient Orbs
+═══════════════════════════════════════════════════ */
+.ambient-orb {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(100px);
+  z-index: 0;
+}
+
+.ambient-orb-1 {
+  width: 700px; height: 500px;
+  top: -200px; left: -100px;
+  background: radial-gradient(ellipse, rgba(0,212,255,0.055) 0%, transparent 70%);
+  animation: orb-drift 14s ease-in-out infinite;
+}
+
+.ambient-orb-2 {
+  width: 500px; height: 500px;
+  bottom: -100px; right: -80px;
+  background: radial-gradient(ellipse, rgba(139,92,246,0.04) 0%, transparent 70%);
+  animation: orb-drift 18s ease-in-out infinite reverse;
+}
+
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, -20px); }
+}
+
+/* ═══════════════════════════════════════════════════
+   PRINT RESET — hide ambient effects when printing
+═══════════════════════════════════════════════════ */
+@media print {
+  .noise-overlay,
+  .ambient-grid,
+  .ambient-orb,
+  .ambient-orb-1,
+  .ambient-orb-2 {
+    display: none !important;
+  }
+}

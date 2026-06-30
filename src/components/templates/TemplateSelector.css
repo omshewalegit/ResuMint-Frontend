@@ -1,0 +1,274 @@
+/* ═══════════════════════════════════════════════════
+   TEMPLATE SELECTOR — "Terminal Luxe" design system
+   Premium card grid matching LP feature section
+═══════════════════════════════════════════════════ */
+
+.ts-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+  font-family: var(--font-body);
+  color: var(--text);
+  animation: fade-up 0.5s var(--ease-out) both;
+}
+
+/* ── Header ── */
+.ts-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.ts-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(0,212,255,0.45);
+  margin-bottom: 14px;
+}
+
+.ts-label::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+}
+
+.ts-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 8px;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.ts-subtitle {
+  font-size: 14px;
+  color: var(--text-2);
+  margin: 0;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+/* ── Grid ── */
+.ts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+@media (max-width: 680px) {
+  .ts-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 420px) {
+  .ts-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Card ── */
+.ts-card {
+  border: 1.5px solid rgba(0,212,255,0.08);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out);
+  background: var(--surface);
+  user-select: none;
+  position: relative;
+  isolation: isolate;
+  animation: fade-up 0.5s var(--ease-out) both;
+}
+
+/* Hover spotlight — LP feature card effect */
+.ts-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(0,212,255,0.06) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ts-card:hover::before { opacity: 1; }
+
+/* Top accent line on hover */
+.ts-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 0; height: 1.5px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+  transition: width 0.4s var(--ease-out);
+  z-index: 2;
+}
+
+.ts-card:hover::after { width: 100%; }
+
+.ts-card:hover {
+  border-color: rgba(0,212,255,0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35), 0 0 40px rgba(0,212,255,0.04);
+}
+
+.ts-card.selected {
+  border-color: rgba(0,212,255,0.5);
+  box-shadow:
+    0 0 0 3px rgba(0,212,255,0.08),
+    0 12px 40px rgba(0,0,0,0.3),
+    0 0 40px rgba(0,212,255,0.06);
+}
+
+.ts-card.selected::after {
+  width: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--green));
+}
+
+/* ── Thumbnail ── */
+.ts-thumb {
+  background: #fff;
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+}
+
+.ts-thumb-sidebar-layout {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  height: 100%;
+}
+
+.ts-thumb-sidebar {
+  padding: 10px 8px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.ts-thumb-main {
+  padding: 10px 10px;
+}
+
+.ts-thumb-name {
+  height: 6px;
+  border-radius: 3px;
+  width: 75%;
+  margin-bottom: 3px;
+}
+
+.ts-thumb-line {
+  height: 3px;
+  background: #ccc;
+  border-radius: 2px;
+}
+
+.ts-thumb-section-label {
+  height: 4px;
+  border-radius: 2px;
+  margin-bottom: 4px;
+}
+
+.ts-thumb-sidebar-name {
+  height: 5px;
+  border-radius: 3px;
+  width: 80%;
+}
+
+/* ── Info ── */
+.ts-info {
+  padding: 12px 14px 14px;
+  position: relative;
+}
+
+.ts-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.ts-template-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.ts-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: rgba(0,212,255,0.12);
+  border: 1px solid rgba(0,212,255,0.3);
+  color: var(--cyan);
+  animation: scale-in 0.3s var(--ease-spring);
+}
+
+.ts-desc {
+  font-size: 11px;
+  color: var(--text-3);
+  display: block;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+.ts-accent-dot {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* ── Actions ── */
+.ts-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ts-btn-back {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-3);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 22px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-out);
+  letter-spacing: 0.04em;
+}
+
+.ts-btn-back:hover {
+  color: var(--text);
+  border-color: rgba(0,212,255,0.2);
+  background: rgba(0,212,255,0.04);
+  transform: translateX(-2px);
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .ts-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ts-btn-back { width: 100%; justify-content: center; }
+  .ts-actions .btn { width: 100%; justify-content: center; }
+}

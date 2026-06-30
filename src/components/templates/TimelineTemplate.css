@@ -1,0 +1,475 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* { box-sizing: border-box; }
+
+.tl-wrap {
+  background: #ffffff;
+  color: #1a1a1a;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 9.8pt;
+  line-height: 1.5;
+  padding: 0.6in 0.7in;
+  max-width: 8.5in;
+  min-height: 11in;
+}
+
+/* ══ HEADER ══ */
+.tl-header {
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.tl-name {
+  font-size: 28pt;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 2px 0;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.tl-role {
+  font-size: 11pt;
+  font-weight: 700;
+  color: #e8732c;
+  margin: 0 0 7px 0;
+  line-height: 1.3;
+}
+
+.tl-location-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 9.5pt;
+  font-weight: 500;
+  color: #555;
+  margin: 0 0 7px 0;
+  line-height: 1.3;
+}
+
+.tl-location-line svg { flex-shrink: 0; color: #e8732c; }
+
+.tl-contact-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 0;
+  font-size: 8.5pt;
+  color: #333;
+  padding-bottom: 2px;
+  margin-bottom: 2px;
+}
+
+.tl-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #222;
+  text-decoration: none;
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid #ccc;
+  line-height: 1.6;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tl-contact-item:last-child {
+  border-right: none;
+  margin-right: 0;
+  padding-right: 0;
+}
+
+.tl-contact-item svg { flex-shrink: 0; color: #e8732c; }
+
+/* ══ SECTION ══ */
+.tl-section { margin-bottom: 10px; }
+
+.tl-heading {
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #2e4ab0;
+  border-bottom: 1.5px solid #2e4ab0;
+  padding-bottom: 2px;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* ══ SUMMARY ══ */
+.tl-summary {
+  font-size: 9.8pt;
+  color: #333;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ══ TIMELINE LAYOUT ══ */
+/*
+  Left col  : date + location  (fixed width 88px)
+  Center col: dot only (20px) — the connecting line is a SINGLE
+              continuous element drawn once per section via
+              .tl-entries::before, not per-entry. This avoids any
+              gap/overlap math between entries entirely.
+  Right col : content
+*/
+
+.tl-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+/* The single continuous vertical line.
+   Center column starts at 122px (left col width) and is 20px wide,
+   so its midpoint — where the dots sit — is at 122 + 10 = 132px.
+   The line runs from the center of the first dot to the center of
+   the last dot, so it starts a few px down (dot radius) and stops
+   a few px before the bottom. */
+.tl-entries::before {
+  content: "";
+  position: absolute;
+  left: 131.5px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: #d9d9d9;
+  z-index: 0;
+}
+
+.tl-entry {
+  display: grid;
+  grid-template-columns: 122px 20px 1fr;
+  align-items: start;
+  gap: 0 0;
+  position: relative;
+  padding-bottom: 14px;
+}
+
+.tl-entry:last-child {
+  padding-bottom: 0;
+}
+
+.tl-left {
+  padding-right: 8px;
+  padding-top: 1px;
+  text-align: right;
+}
+
+.tl-date {
+  font-size: 8pt;
+  font-weight: 700;
+  color: #555;
+  line-height: 1.4;
+  display: block;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.tl-loc {
+  font-size: 8pt;
+  font-weight: 400;
+  color: #888;
+  line-height: 1.4;
+  display: block;
+  white-space: normal;
+}
+
+/* Center: dot only, sitting on top of the continuous line */
+.tl-spine {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.tl-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* Right: content */
+.tl-right {
+  padding-left: 10px;
+}
+
+.tl-entry-title {
+  font-size: 10pt;
+  font-weight: 600;
+  color: #111;
+  margin: 0 0 1px 0;
+  line-height: 1.3;
+}
+
+.tl-entry-company {
+  font-size: 9.8pt;
+  font-weight: 700;
+  color: #e8732c;
+  margin: 0 0 3px 0;
+  line-height: 1.3;
+}
+
+.tl-bullets {
+  list-style: none;
+  padding-left: 10px;
+  margin: 2px 0 0 0;
+}
+
+.tl-bullets li {
+  font-size: 9.5pt;
+  color: #2a2a2a;
+  line-height: 1.55;
+  padding-left: 2px;
+  position: relative;
+  margin-bottom: 1px;
+}
+
+.tl-bullets li::before {
+  content: "•";
+  position: absolute;
+  left: -10px;
+  color: #555;
+}
+
+.tl-bullets li strong { font-weight: 600; }
+
+/* ══ EDUCATION — same timeline ══ */
+/* reuses .tl-entry, .tl-spine, .tl-left etc. */
+.tl-edu-degree {
+  font-size: 10pt;
+  font-weight: 600;
+  color: #111;
+  margin: 0 0 1px 0;
+  line-height: 1.3;
+}
+
+.tl-edu-school {
+  font-size: 9.8pt;
+  font-weight: 700;
+  color: #e8732c;
+  margin: 0 0 2px 0;
+  line-height: 1.3;
+}
+
+.tl-edu-gpa {
+  font-size: 9pt;
+  color: #444;
+  margin: 0;
+}
+
+.tl-edu-cw-heading {
+  font-size: 9pt;
+  font-weight: 600;
+  color: #111;
+  margin: 4px 0 2px 0;
+}
+
+.tl-cw-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tl-cw-grid li {
+  font-size: 8.5pt;
+  color: #333;
+  line-height: 1.5;
+  padding-left: 12px;
+  position: relative;
+}
+
+.tl-cw-grid li::before {
+  content: "•";
+  position: absolute;
+  left: 2px;
+  color: #2e4ab0;
+}
+
+/* ══ SKILLS — underlined pills ══ */
+.tl-skills-block { display: flex; flex-direction: column; gap: 5px; }
+
+.tl-skill-row { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+
+.tl-skill-label {
+  font-size: 9.5pt;
+  font-weight: 600;
+  color: #111;
+  white-space: nowrap;
+  min-width: 150px;
+  padding-top: 2px;
+}
+
+.tl-skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.tl-skill-tag {
+  font-size: 8.5pt;
+  font-weight: 500;
+  color: #1a1a1a;
+  padding: 2px 8px;
+  border-bottom: 1.5px solid #2e4ab0;
+  white-space: nowrap;
+}
+
+/* ══ KEY ACHIEVEMENTS — 2×2 grid ══ */
+.tl-ach-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+}
+
+.tl-ach-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.tl-ach-icon {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  margin-top: 1px;
+}
+
+.tl-ach-icon.c-orange { color: #e8732c; }
+.tl-ach-icon.c-blue   { color: #2e4ab0; }
+
+.tl-ach-body { display: flex; flex-direction: column; gap: 1px; }
+
+.tl-ach-title {
+  font-size: 9.8pt;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+.tl-ach-desc {
+  font-size: 9pt;
+  color: #555;
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Detailed achievements (with bullets) */
+.tl-ach-detail { margin-bottom: 6px; }
+.tl-ach-detail:last-child { margin-bottom: 0; }
+.tl-ach-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.tl-ach-detail-title { font-size: 10pt; font-weight: 600; color: #111; }
+.tl-ach-detail-date  { font-size: 8.5pt; color: #777; white-space: nowrap; flex-shrink: 0; }
+
+/* ══ PROJECTS ══ */
+.tl-proj-entry { margin-bottom: 7px; }
+.tl-proj-entry:last-child { margin-bottom: 0; }
+
+.tl-proj-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.tl-proj-title-group {
+  display: flex;
+  align-items: baseline;
+  flex: 1;
+  min-width: 0;
+}
+
+.tl-proj-name {
+  font-size: 10pt;
+  font-weight: 600;
+  color: #2e4ab0;
+  white-space: nowrap;
+}
+
+.tl-proj-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 5px;
+  position: relative;
+  top: 1px;
+}
+
+.tl-proj-icons a { color: #2e4ab0; text-decoration: none; display: inline-flex; }
+
+.tl-proj-pipe { color: #bbb; margin: 0 5px; font-size: 9.5pt; }
+
+.tl-proj-tech { font-size: 9pt; font-style: italic; color: #666; }
+
+.tl-proj-date { font-size: 9.5pt; font-weight: 600; color: #111; white-space: nowrap; flex-shrink: 0; }
+
+/* ══ CERTIFICATIONS ══ */
+.tl-cert-entry { margin-bottom: 5px; }
+.tl-cert-entry:last-child { margin-bottom: 0; }
+.tl-cert-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.tl-cert-name { font-size: 9.8pt; font-weight: 600; color: #111; }
+.tl-cert-date { font-size: 9.5pt; font-weight: 600; color: #111; white-space: nowrap; flex-shrink: 0; }
+.tl-cert-issuer { font-size: 9pt; color: #2e4ab0; font-style: italic; margin: 0; }
+
+/* ══ LANGUAGES ══ */
+.tl-lang-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 28px;
+  align-items: flex-start;
+}
+
+.tl-lang-item { display: flex; flex-direction: column; gap: 2px; }
+
+.tl-lang-top { display: flex; align-items: center; gap: 8px; }
+
+.tl-lang-name { font-size: 9.8pt; font-weight: 600; color: #111; white-space: nowrap; }
+
+.tl-lang-dots { display: flex; gap: 4px; align-items: center; }
+
+.tl-lang-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #2e4ab0;
+  flex-shrink: 0;
+}
+
+.tl-lang-dot.empty { background: #c8d0e8; }
+
+.tl-lang-level { font-size: 8.5pt; color: #777; margin: 0; }
+
+/* ══ INTERESTS ══ */
+.tl-interests-text { font-size: 9.8pt; color: #333; margin: 0; line-height: 1.55; }
+
+/* ══ PRINT ══ */
+@media print {
+  /* Chrome/print engines strip background-color by default to save ink.
+     Force exact color rendering so language dots, skill tags, and any
+     other background-based UI actually show up in the printed PDF. */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .tl-section, .tl-entry, .tl-proj-entry, .tl-cert-entry {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .tl-wrap {
+    padding: 0.45in 0.55in !important;
+    min-height: unset !important;
+  }
+}
