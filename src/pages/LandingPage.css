@@ -4,8 +4,11 @@
    DESIGN SYSTEM TOKENS
    "Precision Engineering" — Vercel × Linear × Raycast
    Dark obsidian. Surgical cyan. Zero tolerance for slop.
+   ── Now: fully fluid + god-level responsive ──
 ═══════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 :root {
   /* ── Palette ── */
@@ -65,6 +68,16 @@
   --shadow-card:  0 0 0 1px rgba(0,218,255,0.04), 0 30px 80px rgba(0,0,0,0.75), 0 0 60px rgba(0,218,255,0.025);
   --shadow-btn:   0 8px 32px rgba(0,218,255,0.28), 0 0 0 1px rgba(0,218,255,0.18);
   --shadow-lift:  0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,218,255,0.06);
+
+  /* ── FLUID SPACING TOKENS ──
+     Every section pads with these instead of hard px jumps,
+     so layout breathes smoothly at every viewport, not just
+     at the handful of breakpoints we test. */
+  --pad-x:       clamp(18px, 5.5vw, 80px);
+  --pad-section: clamp(56px, 11vw, 130px);
+  --pad-card:    clamp(16px, 3vw, 30px);
+  --gap-lg:      clamp(20px, 4vw, 48px);
+  --gap-md:      clamp(12px, 2.4vw, 24px);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -72,6 +85,8 @@
 ═══════════════════════════════════════════════════ */
 .lp {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
@@ -79,6 +94,24 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   cursor: none;
+}
+
+/* Custom cursor is a desktop-mouse affordance only. On touch devices
+   (phones, tablets, touch laptops) there is no pointer to track, so we
+   restore the native cursor and stop hiding tap targets behind it. */
+@media (hover: none), (pointer: coarse) {
+  .lp { cursor: auto; }
+  .lp-cursor, .lp-cursor-ring { display: none !important; }
+}
+
+/* Respect users who've asked for less motion */
+@media (prefers-reduced-motion: reduce) {
+  .lp *, .lp *::before, .lp *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ═══════════════════════════════════════════════════
@@ -130,11 +163,12 @@
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  padding: 0 80px;
-  height: 64px;
+  padding: 0 var(--pad-x);
+  height: clamp(54px, 8vw, 64px);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   transition: background 0.5s var(--ease-out), border-color 0.5s;
   border-bottom: 1px solid transparent;
 }
@@ -144,12 +178,11 @@
   -webkit-backdrop-filter: blur(28px) saturate(180%);
   border-bottom-color: var(--border);
 }
-@media (max-width: 768px) { .lp-nav { padding: 0 22px; height: 58px; } }
 
 /* Brand */
 .lp-nav-brand {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: clamp(0.95rem, 2.2vw, 1.15rem);
   font-weight: 800;
   color: var(--text);
   text-decoration: none;
@@ -158,6 +191,7 @@
   align-items: center;
   gap: 10px;
   transition: opacity 0.2s;
+  flex-shrink: 0;
 }
 .lp-nav-brand:hover { opacity: 0.82; }
 
@@ -189,7 +223,8 @@
 }
 .lp-nav-brand:hover .lp-nav-logo-mark::after { opacity: 0.6; }
 
-/* Nav center pill */
+/* Nav center pill — hidden below tablet, replaced by hamburger/menu
+   the markup should provide (this stylesheet just handles the state) */
 .lp-nav-center {
   display: flex;
   align-items: center;
@@ -199,8 +234,9 @@
   border-radius: 100px;
   padding: 4px;
   backdrop-filter: blur(12px);
+  flex-wrap: nowrap;
 }
-@media (max-width: 768px) { .lp-nav-center { display: none; } }
+@media (max-width: 860px) { .lp-nav-center { display: none; } }
 
 .lp-nav-link {
   font-size: 12.5px;
@@ -212,6 +248,7 @@
   transition: color 0.2s, background 0.2s;
   letter-spacing: 0.01em;
   font-family: var(--font-body);
+  white-space: nowrap;
 }
 .lp-nav-link:hover {
   color: var(--text);
@@ -226,6 +263,13 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
+}
+/* On narrow phones, drop the secondary ghost button and keep just
+   the primary CTA so the nav never wraps or overflows. */
+@media (max-width: 420px) {
+  .lp-nav-cta .btn-ghost { display: none; }
+  .lp-nav-cta .btn-primary { padding: 10px 16px; font-size: 11px; }
 }
 
 /* ═══════════════════════════════════════════════════
@@ -234,6 +278,7 @@
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   border-radius: var(--r-md);
   font-family: var(--font-display);
@@ -249,6 +294,8 @@
   -webkit-user-select: none;
   user-select: none;
   isolation: isolate;
+  /* keeps tap targets comfortable on touch screens (44px WCAG target) */
+  min-height: 44px;
 }
 
 /* Ripple shine on hover */
@@ -292,8 +339,13 @@
 }
 .btn-primary:hover::after { opacity: 0.5; }
 
-.btn-sm  { padding: 9px 18px; font-size: 11.5px; border-radius: var(--r-sm); }
+.btn-sm  { padding: 9px 18px; font-size: 11.5px; border-radius: var(--r-sm); min-height: 38px; }
 .btn-lg  { padding: 17px 42px; font-size: 13.5px; border-radius: var(--r-lg); }
+
+/* Full-width CTAs on small phones so stacked buttons look intentional */
+@media (max-width: 480px) {
+  .lp-cta-row .btn { width: 100%; }
+}
 
 /* Ghost */
 .btn-ghost {
@@ -327,24 +379,34 @@
 ═══════════════════════════════════════════════════ */
 .lp-hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 100svh; /* svh avoids the mobile-browser-chrome jump vh causes */
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.05fr 0.95fr;
   align-items: center;
-  gap: 48px;
-  padding: 116px 80px 80px;
+  gap: var(--gap-lg);
+  padding: clamp(96px, 16vw, 116px) var(--pad-x) var(--pad-section);
   overflow: hidden;
 }
+
+/* Tablet: still two columns but visual shrinks and text isn't centered yet */
 @media (max-width: 1100px) {
   .lp-hero {
     grid-template-columns: 1fr;
-    padding: 110px 28px 64px;
     text-align: center;
   }
-  .lp-hero-visual { display: none; }
+  .lp-hero-visual { order: -1; padding: 0; margin-bottom: 8px; }
+  .lp-hero-visual .lp-resume-card { width: min(340px, 78vw); }
   .lp-cta-row { justify-content: center; }
   .lp-stats-row { justify-content: center; }
   .lp-sub { margin-inline: auto; }
+}
+
+/* Small phones: shrink the floating chips further and tighten stats */
+@media (max-width: 480px) {
+  .lp-hero-visual .lp-resume-card { width: min(300px, 84vw); }
+  .lp-stats-row { gap: 4px; }
+  .lp-stat { padding: 0 14px; }
+  .lp-stat:first-child { padding-left: 0; }
 }
 
 /* ── Hero background layers ── */
@@ -375,7 +437,7 @@
   position: absolute;
   inset: 0;
   background-image: radial-gradient(rgba(0,218,255,0.18) 1px, transparent 1px);
-  background-size: 42px 42px;
+  background-size: clamp(26px, 4vw, 42px) clamp(26px, 4vw, 42px);
   mask-image:
     radial-gradient(ellipse 80% 70% at 50% 50%, black 5%, transparent 72%);
   opacity: 0.3;
@@ -423,11 +485,16 @@
   50%  { transform: translateY(-55px) scale(1.4); }
   100% { transform: translateY(-130px) scale(0.3); opacity: 0; }
 }
+/* Fewer/no particles on small screens — pure decoration, real perf cost */
+@media (max-width: 640px) {
+  .lp-particles { display: none; }
+}
 
 /* ── Hero content ── */
 .lp-hero-content {
   position: relative;
   z-index: 3;
+  min-width: 0; /* prevents grid blowout on long unbroken strings/urls */
 }
 
 /* Status pill */
@@ -443,10 +510,12 @@
   font-weight: 500;
   color: var(--green-mid);
   letter-spacing: 0.06em;
-  margin-bottom: 30px;
+  margin-bottom: clamp(20px, 3vw, 30px);
   animation: fade-up-in 0.8s var(--ease-out) 0.1s both;
   width: fit-content;
+  max-width: 100%;
 }
+@media (max-width: 1100px) { .lp-status { margin-inline: auto; } }
 .lp-status-dot {
   width: 7px; height: 7px;
   background: var(--green);
@@ -462,16 +531,19 @@
 .lp-status-text  { letter-spacing: 0.07em; font-weight: 600; }
 .lp-status-sep   { width: 1px; height: 11px; background: rgba(0,240,144,0.2); flex-shrink: 0; }
 .lp-status-model { font-family: var(--font-mono); font-size: 9px; color: rgba(0,240,144,0.45); letter-spacing: 0.12em; }
+@media (max-width: 380px) { .lp-status-model { display: none; } .lp-status-sep { display: none; } }
 
-/* Hero headline — line-mask reveal */
+/* Hero headline — line-mask reveal
+   clamp() minimum lowered so 320px devices (iPhone SE etc) never
+   force horizontal scroll on long words. */
 .lp-headline {
   font-family: var(--font-display);
-  font-size: clamp(3.6rem, 6.8vw, 6.4rem);
+  font-size: clamp(2.4rem, 9vw, 6.4rem);
   font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.045em;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
   color: var(--text);
-  margin-bottom: 26px;
+  margin-bottom: clamp(18px, 3vw, 26px);
 }
 .lp-hl-line {
   display: block;
@@ -508,12 +580,12 @@
 
 /* Subtext */
 .lp-sub {
-  font-size: 1.05rem;
+  font-size: clamp(0.92rem, 1.6vw, 1.05rem);
   font-weight: 300;
   color: var(--text-2);
   line-height: 1.82;
   max-width: 430px;
-  margin-bottom: 38px;
+  margin-bottom: clamp(28px, 5vw, 38px);
   animation: fade-up-in 0.9s var(--ease-out) 0.38s both;
 }
 
@@ -528,7 +600,7 @@
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 50px;
+  margin-bottom: clamp(32px, 6vw, 50px);
   animation: fade-up-in 0.9s var(--ease-out) 0.5s both;
 }
 
@@ -536,18 +608,20 @@
 .lp-stats-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  row-gap: 14px;
   animation: fade-up-in 0.9s var(--ease-out) 0.62s both;
 }
 .lp-stat {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 0 26px;
+  padding: 0 clamp(14px, 2.4vw, 26px);
 }
 .lp-stat:first-child { padding-left: 0; }
 .lp-stat-val {
   font-family: var(--font-mono);
-  font-size: 1.3rem;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
   font-weight: 700;
   color: var(--cyan);
   line-height: 1;
@@ -559,6 +633,7 @@
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: var(--text-4);
+  white-space: nowrap;
 }
 .lp-stat-divider {
   width: 1px;
@@ -566,6 +641,7 @@
   background: var(--border);
   flex-shrink: 0;
 }
+@media (max-width: 380px) { .lp-stat-divider { height: 26px; } }
 
 /* ═══════════════════════════════════════════════════
    HERO VISUAL — resume card
@@ -576,18 +652,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 80px;
+  padding: clamp(0px, 4vw, 40px) clamp(0px, 6vw, 80px);
+  width: 100%;
+  min-width: 0;
 }
 
 .lp-visual-scene {
   position: relative;
   transform-style: preserve-3d;
   perspective: 900px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 /* ── Animated gradient border on the card ── */
 .lp-resume-card {
   width: 360px;
+  max-width: 100%;
   background: var(--bg-3);
   border-radius: var(--r-xl);
   overflow: visible;
@@ -638,6 +720,15 @@
   33%     { transform: translateY(-13px) rotateX(-0.6deg) rotateY(1.8deg);  }
   66%     { transform: translateY(-6px)  rotateX(1.8deg)  rotateY(-0.6deg); }
 }
+/* Tilt/float reads as jitter on small screens where the card already
+   scales with viewport width — flatten it below tablet. */
+@media (max-width: 1100px) {
+  .lp-resume-card { animation: card-float-flat 7s ease-in-out infinite; }
+  @keyframes card-float-flat {
+    0%,100% { transform: translateY(0px); }
+    50%     { transform: translateY(-9px); }
+  }
+}
 
 /* Card chrome */
 .lp-card-chrome {
@@ -650,13 +741,16 @@
   position: relative;
   z-index: 1;
 }
-.lp-chrome-dot { width: 9px; height: 9px; border-radius: 50%; }
+.lp-chrome-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .lp-chrome-file {
   margin-left: 8px;
   font-family: var(--font-mono);
   font-size: 8.5px;
   color: var(--text-3);
   letter-spacing: 0.08em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .lp-chrome-badge {
   margin-left: auto;
@@ -669,10 +763,12 @@
   border: 1px solid rgba(0,240,144,0.15);
   border-radius: 100px;
   animation: dot-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* Card body */
-.lp-card-body { padding: 22px 20px; position: relative; z-index: 1; }
+.lp-card-body { padding: var(--pad-card) 20px; position: relative; z-index: 1; }
 
 .lp-card-profile {
   display: flex;
@@ -778,6 +874,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  flex-wrap: wrap;
 }
 .lp-score-label {
   font-family: var(--font-mono);
@@ -789,6 +886,7 @@
 }
 .lp-score-bar {
   flex: 1;
+  min-width: 60px;
   height: 3.5px;
   background: rgba(0,240,144,0.08);
   border-radius: 100px;
@@ -843,6 +941,11 @@
   0%,100% { transform: translateY(0px); }
   50%     { transform: translateY(-9px); }
 }
+/* If chips are ever enabled via inline/JS display, keep them from
+   spilling off-screen on narrow viewports. */
+@media (max-width: 480px) {
+  .lp-chip { font-size: 9.5px; padding: 6px 11px; }
+}
 
 /* Ambient orbs behind card */
 .lp-orb {
@@ -896,14 +999,14 @@
 
 .lp-section-h {
   font-family: var(--font-display);
-  font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+  font-size: clamp(1.65rem, 5.5vw, 2.9rem);
   font-weight: 700;
   color: var(--text);
   letter-spacing: -0.028em;
-  line-height: 1.06;
+  line-height: 1.08;
 }
 .lp-section-sub {
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.6vw, 1rem);
   font-weight: 300;
   color: var(--text-2);
   line-height: 1.78;
@@ -916,7 +1019,7 @@
 ═══════════════════════════════════════════════════ */
 .lp-how {
   position: relative;
-  padding: 112px 80px;
+  padding: var(--pad-section) var(--pad-x);
   background: var(--bg-1);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
@@ -930,7 +1033,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 560px;
+  width: min(560px, 100%);
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(0,218,255,0.35), transparent);
 }
@@ -943,12 +1046,10 @@
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 800px; height: 400px;
+  width: min(800px, 90vw); height: 400px;
   background: radial-gradient(ellipse, rgba(0,218,255,0.03) 0%, transparent 65%);
   pointer-events: none;
 }
-
-@media (max-width: 900px) { .lp-how { padding: 80px 28px; } }
 
 .lp-how-inner {
   max-width: 1100px;
@@ -960,22 +1061,26 @@
 .lp-how-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin-top: 68px;
+  gap: var(--gap-md) 0;
+  margin-top: clamp(40px, 8vw, 68px);
   position: relative;
 }
 @media (max-width: 900px) {
-  .lp-how-grid { grid-template-columns: 1fr 1fr; gap: 44px; }
+  .lp-how-grid { grid-template-columns: 1fr 1fr; gap: 44px 20px; }
   .lp-step-line { display: none; }
 }
-@media (max-width: 560px) { .lp-how-grid { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  .lp-how-grid { grid-template-columns: 1fr; gap: 36px; }
+}
 
 .lp-step {
   position: relative;
-  padding: 0 18px;
+  padding: 0 clamp(8px, 2vw, 18px);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  min-width: 0;
 }
 
 /* Step circle */
@@ -991,6 +1096,7 @@
   position: relative;
   z-index: 1;
   transition: all 0.35s var(--ease-spring);
+  flex-shrink: 0;
 }
 /* Outer glow ring on hover */
 .lp-step-circle::before {
@@ -1055,10 +1161,9 @@
    FEATURES
 ═══════════════════════════════════════════════════ */
 .lp-features {
-  padding: 112px 80px;
+  padding: var(--pad-section) var(--pad-x);
   position: relative;
 }
-@media (max-width: 768px) { .lp-features { padding: 80px 22px; } }
 
 .lp-features-inner {
   max-width: 1100px;
@@ -1067,9 +1172,9 @@
 }
 .lp-feat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(248px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(248px, 100%), 1fr));
   gap: 13px;
-  margin-top: 62px;
+  margin-top: clamp(36px, 7vw, 62px);
 }
 
 /* Feature card */
@@ -1078,15 +1183,16 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  padding: 30px 26px;
+  padding: clamp(22px, 3.5vw, 30px) clamp(18px, 3vw, 26px);
   text-align: left;
   overflow: hidden;
   transition: border-color 0.3s, transform 0.32s var(--ease-spring), box-shadow 0.3s;
   cursor: default;
   isolation: isolate;
+  min-width: 0;
 }
 
-/* Mouse-tracking spotlight */
+/* Mouse-tracking spotlight — only meaningful with a real pointer */
 .lp-feat::before {
   content: '';
   position: absolute;
@@ -1096,7 +1202,9 @@
   transition: opacity 0.35s;
   pointer-events: none;
 }
-.lp-feat:hover::before { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .lp-feat:hover::before { opacity: 1; }
+}
 
 /* Top-edge accent line that slides in on hover */
 .lp-feat::after {
@@ -1115,12 +1223,18 @@
   transform: translateY(-5px);
   box-shadow: var(--shadow-lift);
 }
+/* No hover-lift on touch — avoids a "stuck" hovered card after tap */
+@media (hover: none) {
+  .lp-feat:hover { transform: none; }
+}
 
 .lp-feat-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  gap: 10px;
   margin-bottom: 18px;
+  flex-wrap: wrap;
 }
 .lp-feat-icon-box {
   width: 48px; height: 48px;
@@ -1131,6 +1245,7 @@
   align-items: center;
   justify-content: center;
   transition: background 0.3s, box-shadow 0.3s;
+  flex-shrink: 0;
 }
 .lp-feat:hover .lp-feat-icon-box {
   background: rgba(0,218,255,0.1);
@@ -1147,6 +1262,7 @@
   border: 1px solid rgba(0,218,255,0.1);
   border-radius: 100px;
   padding: 4px 10px;
+  white-space: nowrap;
 }
 .lp-feat-title {
   font-family: var(--font-display);
@@ -1170,7 +1286,7 @@
 ═══════════════════════════════════════════════════ */
 .lp-cta {
   position: relative;
-  padding: 130px 80px;
+  padding: var(--pad-section) var(--pad-x);
   text-align: center;
   overflow: hidden;
   border-top: 1px solid var(--border);
@@ -1189,7 +1305,7 @@
   position: absolute;
   inset: 0;
   background-image: radial-gradient(rgba(0,218,255,0.12) 1px, transparent 1px);
-  background-size: 42px 42px;
+  background-size: clamp(26px, 4vw, 42px) clamp(26px, 4vw, 42px);
   mask-image: radial-gradient(ellipse 65% 75% at 50% 50%, black, transparent);
   opacity: 0.2;
   pointer-events: none;
@@ -1225,11 +1341,11 @@
 
 .lp-cta-h {
   font-family: var(--font-display);
-  font-size: clamp(2.3rem, 5vw, 3.8rem);
+  font-size: clamp(2rem, 7vw, 3.8rem);
   font-weight: 800;
   color: var(--text);
   letter-spacing: -0.035em;
-  line-height: 1.04;
+  line-height: 1.06;
   margin-bottom: 16px;
 }
 .lp-cta-p {
@@ -1237,13 +1353,13 @@
   font-weight: 300;
   color: var(--text-3);
   letter-spacing: 0.04em;
-  margin-bottom: 42px;
+  margin-bottom: clamp(30px, 5vw, 42px);
 }
 .lp-cta-meta {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 26px;
+  gap: clamp(14px, 3vw, 26px);
   margin-top: 28px;
   flex-wrap: wrap;
 }
@@ -1255,6 +1371,7 @@
   color: var(--text-3);
   font-weight: 400;
   letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 .lp-cta-meta-dot {
   width: 5px; height: 5px;
@@ -1268,7 +1385,7 @@
    FOOTER
 ═══════════════════════════════════════════════════ */
 .lp-footer {
-  padding: 20px 80px;
+  padding: 20px var(--pad-x);
   border-top: 1px solid var(--border);
 }
 .lp-footer-inner {
@@ -1298,11 +1415,12 @@
   color: var(--text-4);
   letter-spacing: 0.06em;
   font-family: var(--font-body);
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .lp-footer-sep { color: var(--border-2); }
 
 @media (max-width: 768px) {
-  .lp-footer { padding: 20px 22px; }
   .lp-footer-inner { justify-content: center; text-align: center; }
 }
 
@@ -1339,4 +1457,41 @@
 ::selection {
   background: rgba(0,218,255,0.22);
   color: var(--text);
+}
+
+/* ═══════════════════════════════════════════════════
+   GOD-LEVEL RESPONSIVE SAFETY NET
+   Catch-all rules that protect against overflow on any
+   screen size we didn't explicitly design a breakpoint for
+   — foldables, ultra-wide monitors, weird tablet aspect ratios.
+═══════════════════════════════════════════════════ */
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Anything that could overflow horizontally on tiny screens gets
+   permission to wrap instead of forcing a scrollbar. */
+.lp-headline, .lp-sub, .lp-section-h, .lp-section-sub,
+.lp-cta-h, .lp-cta-p, .lp-card-name, .lp-feat-desc, .lp-feat-title {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Ultra-wide desktops (32"+ monitors): cap content width so lines
+   of text don't stretch to unreadable widths and the hero doesn't
+   look empty in the middle. */
+@media (min-width: 1800px) {
+  .lp-hero, .lp-how, .lp-features, .lp-cta, .lp-nav, .lp-footer {
+    max-width: 1800px;
+    margin-inline: auto;
+  }
+}
+
+/* Landscape phones (short viewport height): min-height 100svh hero
+   can push CTAs below the fold — relax it so content is reachable. */
+@media (max-height: 480px) and (orientation: landscape) {
+  .lp-hero { min-height: auto; padding-top: 90px; padding-bottom: 60px; }
+  .lp-hero-visual { display: none; }
 }

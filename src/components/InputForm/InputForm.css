@@ -1,13 +1,14 @@
 /* ═══════════════════════════════════════════════════
    INPUT FORM — "Terminal Luxe" design system
    Matches LP feature card quality
+   ── Now: fully fluid + god-level responsive ──
 ═══════════════════════════════════════════════════ */
 
 .input-form {
   background: var(--surface);
   border: 1px solid var(--border-2);
   border-radius: var(--radius-xl);
-  padding: 40px;
+  padding: clamp(22px, 5vw, 40px);
   backdrop-filter: blur(16px);
   position: relative;
   overflow: hidden;
@@ -18,9 +19,21 @@
     0 0 80px rgba(0,212,255,0.03);
   animation: fade-up 0.5s var(--ease-out) both;
   transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-/* Hover spotlight — LP feature card effect */
+@media (prefers-reduced-motion: reduce) {
+  .input-form *, .input-form *::before, .input-form *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Hover spotlight — LP feature card effect. Only meaningful with a
+   real pointer; on touch it would just stay stuck at center. */
 .input-form::before {
   content: '';
   position: absolute;
@@ -31,7 +44,9 @@
   pointer-events: none;
   z-index: 0;
 }
-.input-form:hover::before { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .input-form:hover::before { opacity: 1; }
+}
 
 /* Top gradient accent line — shimmer animation */
 .input-form::after {
@@ -56,6 +71,11 @@
   border-radius: 50%;
   filter: blur(20px);
 }
+/* Keep the orb from visually clipping into content on very narrow
+   cards — it's decorative, so just shrink it rather than reposition. */
+@media (max-width: 400px) {
+  .if-orb { width: 150px; height: 150px; top: -50px; right: -50px; }
+}
 
 .input-form:hover {
   border-color: rgba(0,212,255,0.22);
@@ -67,30 +87,33 @@
 
 /* ── Header ── */
 .form-header {
-  margin-bottom: 28px;
+  margin-bottom: clamp(20px, 4vw, 28px);
   position: relative;
   z-index: 1;
 }
 
 .form-title {
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: clamp(1.4rem, 5vw, 2rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1;
+  line-height: 1.1;
   margin: 0 0 10px;
   background: linear-gradient(120deg, #e8edf5 0%, var(--cyan) 60%, var(--green) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .form-subtitle {
-  font-size: 15px;
+  font-size: clamp(13px, 2vw, 15px);
   font-weight: 400;
   color: var(--text-2);
   line-height: 1.65;
   margin: 0;
+  overflow-wrap: break-word;
 }
 
 /* ── Samples ── */
@@ -106,10 +129,14 @@
   z-index: 1;
 }
 
+/* auto-fit + a sane minmax means this naturally goes 3 → 2 → 1 columns
+   as the card narrows, instead of only ever snapping at the two hard
+   breakpoints below — it now also adapts inside odd container widths
+   (e.g. a form embedded in a narrower sidebar on a wide screen). */
 .samples-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: clamp(6px, 1.5vw, 8px);
   margin-bottom: 20px;
   position: relative;
   z-index: 1;
@@ -136,6 +163,8 @@
   white-space: nowrap;
   position: relative;
   overflow: hidden;
+  min-height: 38px; /* comfortable tap target on phones */
+  min-width: 0;
 }
 
 .sample-pill::after {
@@ -155,6 +184,10 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0,212,255,0.12);
 }
+/* No hover-lift on touch — avoids a "stuck" pressed look after tap */
+@media (hover: none) {
+  .sample-pill:hover:not(:disabled) { transform: none; }
+}
 
 .sample-pill.active {
   border-color: rgba(0,212,255,0.5);
@@ -164,7 +197,7 @@
 }
 
 .sample-pill:disabled { opacity: 0.4; cursor: not-allowed; }
-.sample-emoji { font-size: 13px; }
+.sample-emoji { font-size: 13px; flex-shrink: 0; }
 
 /* ── Textarea ── */
 .textarea-wrapper {
@@ -175,19 +208,25 @@
 
 .description-textarea {
   width: 100%;
-  padding: 18px;
+  padding: clamp(14px, 3vw, 18px);
+  padding-bottom: 34px; /* keep text clear of the char-count badge on all sizes */
   border-radius: var(--radius-md);
   border: 1px solid rgba(0,212,255,0.12);
   background: rgba(0,0,0,0.3);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: clamp(13px, 1.6vw, 14px);
   font-weight: 300;
   line-height: 1.75;
   resize: none;
   outline: none;
   box-sizing: border-box;
   transition: all 0.3s var(--ease-out);
+  /* 16px is the iOS Safari threshold below which it auto-zooms on
+     focus; the clamp above already keeps us at/above 13px on the
+     smallest phones but we still floor font-size to avoid that jump
+     on any device with a slightly different clamp evaluation. */
+  min-height: 120px;
 }
 
 .description-textarea:focus {
@@ -213,6 +252,7 @@
   color: rgba(160,190,210,0.22);
   font-family: var(--font-mono);
   letter-spacing: 0.04em;
+  pointer-events: none;
 }
 
 .char-count.warn { color: rgba(255,160,60,0.7); }
@@ -222,7 +262,7 @@
   background: rgba(0,212,255,0.04);
   border: 1px solid rgba(0,212,255,0.1);
   border-radius: var(--radius-md);
-  padding: 16px 18px;
+  padding: clamp(13px, 2.5vw, 16px) clamp(14px, 3vw, 18px);
   margin-bottom: 24px;
   position: relative;
   overflow: hidden;
@@ -262,9 +302,9 @@
 
 .tips-list li {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
-  font-size: 13.5px;
+  font-size: clamp(12.5px, 1.8vw, 13.5px);
   font-weight: 400;
   color: var(--text-2);
   line-height: 1.5;
@@ -273,6 +313,7 @@
 .tip-icon {
   color: rgba(0,212,255,0.35);
   flex-shrink: 0;
+  margin-top: 2px; /* keeps the icon aligned to the first line once text wraps */
 }
 
 /* ── Generate Button ── */
@@ -283,6 +324,7 @@
   gap: 10px;
   width: 100%;
   padding: 16px;
+  min-height: 52px; /* comfortable primary-action tap target */
   border: none;
   border-radius: var(--radius-md);
   background: linear-gradient(120deg, var(--cyan) 0%, var(--green) 100%);
@@ -316,6 +358,9 @@
     0 16px 48px rgba(0,212,255,0.35),
     0 0 0 1px rgba(0,212,255,0.4);
 }
+@media (hover: none) {
+  .generate-btn:hover:not(:disabled) { transform: none; }
+}
 
 .generate-btn:active:not(:disabled) { transform: translateY(0); }
 
@@ -335,7 +380,7 @@
 @media (max-width: 560px) {
   .input-form { padding: 28px 20px; }
   .samples-row { grid-template-columns: repeat(2, 1fr); }
-  .form-title { font-size: 1.6rem; }
+  .form-title { font-size: clamp(1.35rem, 6vw, 1.6rem); }
 }
 
 @media (max-width: 380px) {
@@ -347,4 +392,18 @@
     text-align: center;
     line-height: 1.3;
   }
+}
+
+/* Very small phones (iPhone SE / older Android, ~320px) — collapse
+   samples to a single column so pill text never wraps into a squeeze. */
+@media (max-width: 300px) {
+  .samples-row { grid-template-columns: 1fr; }
+}
+
+/* Foldables / narrow-but-tall inner panes: same rules but keep the
+   textarea from becoming disproportionately tall relative to a very
+   short container. */
+@media (max-height: 480px) and (orientation: landscape) {
+  .description-textarea { min-height: 84px; }
+  .form-tips { margin-bottom: 16px; }
 }

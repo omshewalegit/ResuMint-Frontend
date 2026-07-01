@@ -1,21 +1,32 @@
 /* ═══════════════════════════════════════════════════
    TEMPLATE SELECTOR — "Terminal Luxe" design system
    Premium card grid matching LP feature section
+   ── Now: fully fluid + god-level responsive ──
 ═══════════════════════════════════════════════════ */
 
 .ts-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 24px 60px;
+  padding: 0 clamp(16px, 4vw, 24px) clamp(40px, 8vw, 60px);
   font-family: var(--font-body);
   color: var(--text);
   animation: fade-up 0.5s var(--ease-out) both;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ts-container *, .ts-container *::before, .ts-container *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
 /* ── Header ── */
 .ts-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: clamp(28px, 5vw, 40px);
+  padding-inline: clamp(0px, 2vw, 8px);
 }
 
 .ts-label {
@@ -37,32 +48,41 @@
   width: 20px;
   height: 1px;
   background: currentColor;
+  flex-shrink: 0;
 }
 
 .ts-title {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-size: clamp(1.4rem, 6vw, 2.2rem);
   font-weight: 700;
   color: var(--text);
   margin: 0 0 8px;
   letter-spacing: -0.025em;
-  line-height: 1.1;
+  line-height: 1.15;
+  overflow-wrap: break-word;
 }
 
 .ts-subtitle {
-  font-size: 14px;
+  font-size: clamp(12.5px, 2vw, 14px);
   color: var(--text-2);
   margin: 0;
   font-weight: 300;
   letter-spacing: 0.02em;
+  overflow-wrap: break-word;
 }
 
-/* ── Grid ── */
+/* ── Grid ──
+   Keeps the intentional 3 → 2 → 1 step (thumbnails are designed
+   around specific card proportions, so free-flowing auto-fit would
+   distort them) but the gap now breathes with viewport width instead
+   of jumping, and the two breakpoints get an extra one between them
+   so mid-size tablets (680–420px is a big span) don't sit awkwardly
+   at 2-up when a card would already be comfortable at 1-up. */
 .ts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 36px;
+  gap: clamp(10px, 2vw, 16px);
+  margin-bottom: clamp(28px, 5vw, 36px);
 }
 
 @media (max-width: 680px) {
@@ -85,9 +105,12 @@
   position: relative;
   isolation: isolate;
   animation: fade-up 0.5s var(--ease-out) both;
+  min-width: 0;
 }
 
-/* Hover spotlight — LP feature card effect */
+/* Hover spotlight — LP feature card effect. Pointer-only: on touch
+   there's no cursor position to track, so it would just sit stuck
+   at dead-center and look like a design mistake. */
 .ts-card::before {
   content: '';
   position: absolute;
@@ -98,8 +121,9 @@
   pointer-events: none;
   z-index: 1;
 }
-
-.ts-card:hover::before { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .ts-card:hover::before { opacity: 1; }
+}
 
 /* Top accent line on hover */
 .ts-card::after {
@@ -119,6 +143,11 @@
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(0,0,0,0.35), 0 0 40px rgba(0,212,255,0.04);
 }
+/* No hover-lift on touch — otherwise the card looks "stuck raised"
+   after a tap, since there's no mouse-leave event to reset it. */
+@media (hover: none) {
+  .ts-card:hover { transform: none; box-shadow: none; }
+}
 
 .ts-card.selected {
   border-color: rgba(0,212,255,0.5);
@@ -133,17 +162,23 @@
   background: linear-gradient(90deg, var(--cyan), var(--green));
 }
 
-/* ── Thumbnail ── */
+/* ── Thumbnail ──
+   Switched from a fixed 180px height to aspect-ratio. A fixed height
+   looks fine at 3-up on desktop, but the same 180px reads either too
+   short (ultra-wide single-column cards on a big phone) or too tall
+   relative to card width (narrow columns on small tablets) — the
+   thumbnail's proportions should scale with the card, not the
+   viewport's height budget. */
 .ts-thumb {
   background: #fff;
-  height: 180px;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
   position: relative;
 }
 
 .ts-thumb-sidebar-layout {
   display: grid;
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 28% 1fr; /* was a fixed 80px — now proportional so it holds its look at any card width */
   height: 100%;
 }
 
@@ -151,10 +186,12 @@
   padding: 10px 8px;
   height: 100%;
   box-sizing: border-box;
+  min-width: 0;
 }
 
 .ts-thumb-main {
   padding: 10px 10px;
+  min-width: 0;
 }
 
 .ts-thumb-name {
@@ -192,15 +229,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   margin-bottom: 4px;
 }
 
 .ts-template-name {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: clamp(12px, 2vw, 13px);
   font-weight: 700;
   color: var(--text);
   letter-spacing: 0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .ts-check {
@@ -213,14 +255,16 @@
   border: 1px solid rgba(0,212,255,0.3);
   color: var(--cyan);
   animation: scale-in 0.3s var(--ease-spring);
+  flex-shrink: 0;
 }
 
 .ts-desc {
-  font-size: 11px;
+  font-size: clamp(10.5px, 1.6vw, 11px);
   color: var(--text-3);
   display: block;
   line-height: 1.5;
   letter-spacing: 0.02em;
+  overflow-wrap: break-word;
 }
 
 .ts-accent-dot {
@@ -237,11 +281,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .ts-btn-back {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 7px;
   font-family: var(--font-body);
   font-size: 12px;
@@ -254,6 +301,8 @@
   cursor: pointer;
   transition: all 0.25s var(--ease-out);
   letter-spacing: 0.04em;
+  min-height: 44px; /* comfortable touch target */
+  white-space: nowrap;
 }
 
 .ts-btn-back:hover {
@@ -261,6 +310,9 @@
   border-color: rgba(0,212,255,0.2);
   background: rgba(0,212,255,0.04);
   transform: translateX(-2px);
+}
+@media (hover: none) {
+  .ts-btn-back:hover { transform: none; }
 }
 
 /* Responsive */
@@ -271,4 +323,10 @@
   }
   .ts-btn-back { width: 100%; justify-content: center; }
   .ts-actions .btn { width: 100%; justify-content: center; }
+}
+
+/* Very small phones (~320px) — trim card info padding a touch so
+   the name row + description don't feel cramped at 1-up width. */
+@media (max-width: 340px) {
+  .ts-info { padding: 10px 12px 12px; }
 }
