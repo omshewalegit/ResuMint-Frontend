@@ -1134,6 +1134,45 @@ const CSS = `
 .reveal-d2 { transition-delay: 0.2s; }
 .reveal-d3 { transition-delay: 0.3s; }
 .reveal-d4 { transition-delay: 0.4s; }
+
+/* ══ MOBILE RESPONSIVE FIX ══ */
+.lp-headline {
+  font-size: clamp(2rem, 9vw, 6rem);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.lp-sub {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  font-size: clamp(0.88rem, 3.5vw, 1.05rem);
+}
+
+@media (max-width: 480px) {
+  .lp-hero {
+    padding: 100px 18px 50px;
+  }
+  .lp-nav {
+    padding: 0 16px;
+  }
+  .lp-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .lp-cta-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .lp-stats-row {
+    gap: 0;
+  }
+  .lp-stat {
+    padding: 0 10px;
+  }
+  .lp-stat:first-child { padding-left: 0; }
+  .lp-status-model, .lp-status-sep { display: none; }
+}
+
 `;
 
 /* ══ DATA ═══════════════════════════════════════ */
